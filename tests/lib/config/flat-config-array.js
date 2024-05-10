@@ -13,6 +13,8 @@ const { FlatConfigArray } = require("../../../lib/config/flat-config-array");
 const assert = require("chai").assert;
 const stringify = require("json-stable-stringify-without-jsonify");
 const espree = require("espree");
+const jslang = require("../../../lib/languages/js");
+const { language } = require("gray-matter");
 
 //-----------------------------------------------------------------------------
 // Helpers
@@ -22,6 +24,9 @@ const baseConfig = {
     files: ["**/*.js"],
     plugins: {
         "@": {
+            languages: {
+                js: jslang
+            },
             rules: {
                 foo: {
                     meta: {
@@ -1494,6 +1499,7 @@ describe("FlatConfigArray", () => {
 
                     await assertInvalidConfig([
                         {
+                            language: "@/js",
                             languageOptions: {
                                 parser: null
                             }
@@ -1505,6 +1511,7 @@ describe("FlatConfigArray", () => {
 
                     await assertInvalidConfig([
                         {
+                            language: "@/js",
                             languageOptions: {
                                 parser: "foo/bar"
                             }
@@ -1516,6 +1523,7 @@ describe("FlatConfigArray", () => {
 
                     await assertInvalidConfig([
                         {
+                            language: "@/js",
                             languageOptions: {
                                 parser: {}
                             }
@@ -1530,6 +1538,7 @@ describe("FlatConfigArray", () => {
 
                     return assertMergedResult([
                         {
+                            language: "@/js",
                             languageOptions: {
                                 parser
                             }
@@ -1607,6 +1616,7 @@ describe("FlatConfigArray", () => {
 
                     await assertInvalidConfig([
                         {
+                            language: "@/js",
                             languageOptions: {
                                 parserOptions: "true"
                             }
@@ -1616,6 +1626,7 @@ describe("FlatConfigArray", () => {
 
                 it("should merge two objects when second object has different keys", () => assertMergedResult([
                     {
+                        language: "@/js",
                         languageOptions: {
                             parserOptions: {
                                 foo: "whatever"
@@ -1631,7 +1642,7 @@ describe("FlatConfigArray", () => {
                     }
                 ], {
                     plugins: baseConfig.plugins,
-
+                    language: jslang,
                     languageOptions: {
                         parserOptions: {
                             foo: "whatever",
@@ -1642,6 +1653,7 @@ describe("FlatConfigArray", () => {
 
                 it("should deeply merge two objects when second object has different keys", () => assertMergedResult([
                     {
+                        language: "@/js",
                         languageOptions: {
                             parserOptions: {
                                 ecmaFeatures: {
@@ -1661,7 +1673,7 @@ describe("FlatConfigArray", () => {
                     }
                 ], {
                     plugins: baseConfig.plugins,
-
+                    language: jslang,
                     languageOptions: {
                         parserOptions: {
                             ecmaFeatures: {
@@ -1674,6 +1686,7 @@ describe("FlatConfigArray", () => {
 
                 it("should deeply merge two objects when second object has missing key", () => assertMergedResult([
                     {
+                        language: "@/js",
                         languageOptions: {
                             parserOptions: {
                                 ecmaFeatures: {
@@ -1689,7 +1702,7 @@ describe("FlatConfigArray", () => {
                     }
                 ], {
                     plugins: baseConfig.plugins,
-
+                    language: jslang,
                     languageOptions: {
                         ecmaVersion: 2021,
                         parserOptions: {
@@ -1702,6 +1715,7 @@ describe("FlatConfigArray", () => {
 
                 it("should merge two objects when second object has overrides", () => assertMergedResult([
                     {
+                        language: "@/js",
                         languageOptions: {
                             parserOptions: {
                                 foo: "whatever"
@@ -1717,7 +1731,7 @@ describe("FlatConfigArray", () => {
                     }
                 ], {
                     plugins: baseConfig.plugins,
-
+                    language: jslang,
                     languageOptions: {
                         parserOptions: {
                             foo: "bar"
@@ -1727,6 +1741,7 @@ describe("FlatConfigArray", () => {
 
                 it("should merge an object and undefined into one object", () => assertMergedResult([
                     {
+                        language: "@/js",
                         languageOptions: {
                             parserOptions: {
                                 foo: "whatever"
@@ -1737,7 +1752,7 @@ describe("FlatConfigArray", () => {
                     }
                 ], {
                     plugins: baseConfig.plugins,
-
+                    language: jslang,
                     languageOptions: {
                         parserOptions: {
                             foo: "whatever"
@@ -1750,6 +1765,7 @@ describe("FlatConfigArray", () => {
                     {
                     },
                     {
+                        language: "@/js",
                         languageOptions: {
                             parserOptions: {
                                 foo: "bar"
@@ -1758,7 +1774,7 @@ describe("FlatConfigArray", () => {
                     }
                 ], {
                     plugins: baseConfig.plugins,
-
+                    language: jslang,
                     languageOptions: {
                         parserOptions: {
                             foo: "bar"
